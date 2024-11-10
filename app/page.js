@@ -9,7 +9,7 @@ export default function Home() {
   let ans1MaxVal = 100;
   let ans2MaxVal = 100;
   let ans1Step = 2;
-  let ans2Step = 1;
+  let ans2Step = 0.1;
   let splitNum = 25;
   const colorVariants = {
     normal: 'border-black',
