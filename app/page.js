@@ -158,7 +158,7 @@ export default function Home() {
       <div className="w-3/4 h-[130px] ">
         <div ref={frog} className=" absolute  transition-all w-[100px]">
           <Image
-            src={`/images/${imgRoad}.jpg`}
+            src={`/qiqiGame/images/${imgRoad}.jpg`}
             alt="qiqi logo"
             width={100}
             height={100}

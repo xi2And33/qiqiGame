@@ -1,14 +1,3 @@
-// // next.config.js
-// module.exports = {
-//   output: 'export', // This tells Next.js to export your site as static HTML
-//   swcMinify: false,
-//   productionBrowserSourceMaps: true,
-//   images: {
-//     unoptimized: true, // Disable image optimization during the export
-//   },
-// };
-
-// next.config.js
 // next.config.js
 const isGithubActions = process.env.GITHUB_ACTIONS || false;
 let assetPrefix = '';
@@ -20,9 +9,12 @@ if (isGithubActions) {
   basePath = `/${repo}`;
 }
 
+// next.config.js
 module.exports = {
   output: 'export',
-  assetPrefix, // Makes sure images and other assets are loaded correctly
-  basePath, // Ensures the base path is correctly set when hosted on GitHub Pages
-  images: { unoptimized: true },
+  images: {
+    unoptimized: true, // Disable image optimization for static export
+  },
+  assetPrefix: '/qiqiGame', // Ensure all assets (including images) are prefixed with /qiqiGame
+  basePath: '/qiqiGame', // Ensure routing paths are prefixed with /qiqiGame
 };
