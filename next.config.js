@@ -9,6 +9,7 @@
 // };
 
 // next.config.js
+// next.config.js
 const isGithubActions = process.env.GITHUB_ACTIONS || false;
 let assetPrefix = '';
 let basePath = '';
