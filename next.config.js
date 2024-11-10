@@ -24,4 +24,5 @@ module.exports = {
   output: 'export',
   assetPrefix, // Makes sure images and other assets are loaded correctly
   basePath, // Ensures the base path is correctly set when hosted on GitHub Pages
+  images: { unoptimized: true },
 };
