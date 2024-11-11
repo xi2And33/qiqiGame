@@ -1,8 +1,7 @@
 'use client';
 import Image from 'next/image';
-import { useState, useEffect, useRef } from 'react';
-import { useSearchParams } from 'next/navigation';
-
+import { useState, useEffect, useRef, Suspense } from 'react';
+import FrogTypeChecker from './FrogTypeChecker';
 // Basic styles for the modal
 const modalStyles = {
   overlay: {
@@ -37,7 +36,10 @@ export default function Frog() {
   let opts = ['+', '-', '×', '÷'];
   let optsReals = ['+', '-', '*', '/'];
   const [isOpen, setIsOpen] = useState(false);
-
+  const [frogType, setFrogType] = useState(null);
+  const handleFrogTypeChange = (type) => {
+    setFrogType(type);
+  };
   const openModal = () => {
     setIsOpen(true);
   };
@@ -48,7 +50,6 @@ export default function Frog() {
   let ans1Step = 2;
   let ans2Step = 0.1;
   let splitNum = 25;
-  const searchParams = useSearchParams();
   const colorVariants = {
     normal: 'border-black',
     green: 'border-green-600 text-green-600  border-4 ',
@@ -142,20 +143,7 @@ export default function Frog() {
       );
     }
   }
-  function moveFrog() {
-    if (searchParams.get('frogType') == 1) {
-      let i = parseInt(Math.random() * 160) % 16;
-      setImageSrc(`/qiqiGame/images/nftFrog/${i}.gif`);
-    } else {
-      setImageSrc(
-        `/qiqiGame/images/normalFrog/${parseInt(myCorrectNum / splitNum)}.jpg`
-      );
-    }
-
-    frog.current.style.transform = `translateX(${
-      perStepMove * myCorrectNum - 50
-    }px)`;
-  }
+  function moveFrog() {}
 
   useEffect(() => {
     let correntNum = localStorage.getItem('correntNum') || 0;
@@ -182,12 +170,28 @@ export default function Frog() {
   }, []);
 
   useEffect(() => {
-    moveFrog();
+    // moveFrog();
     return () => {};
   }, [myCorrectNum]);
+  useEffect(() => {
+    if (frogType === '1') {
+      const i = parseInt(Math.random() * 160) % 16;
+      setImageSrc(`/qiqiGame/images/nftFrog/${i}.gif`);
+    } else {
+      setImageSrc(
+        `/qiqiGame/images/normalFrog/${parseInt(myCorrectNum / 25)}.jpg`
+      );
+    }
+    frog.current.style.transform = `translateX(${
+      perStepMove * myCorrectNum - 50
+    }px)`;
+  }, [frogType, myCorrectNum]);
 
   return (
     <div className="w-full h-screen flex flex-col items-center justify-center select-none">
+      <Suspense fallback={<div>Loading...</div>}>
+        <FrogTypeChecker onFrogTypeChange={handleFrogTypeChange} />
+      </Suspense>
       <div
         className="text-xl text-black mb-10"
         onClick={() => {
