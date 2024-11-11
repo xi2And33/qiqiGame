@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
 import { useState, useEffect, useRef } from 'react';
-
+import { useSearchParams } from 'next/navigation';
 export default function Home() {
   let opts = ['+', '-', '×', '÷'];
   let optsReals = ['+', '-', '*', '/'];
@@ -11,15 +11,16 @@ export default function Home() {
   let ans1Step = 2;
   let ans2Step = 0.1;
   let splitNum = 25;
+  const searchParams = useSearchParams();
   const colorVariants = {
     normal: 'border-black',
     green: 'border-green-600 text-green-600  border-4 ',
     red: 'border-red-600 text-red-600 border-4',
   };
+  const [imageSrc, setImageSrc] = useState('');
   const frog = useRef(null);
   const inputRef = useRef(null);
   const [perStepMove, setperStepMove] = useState(0);
-  const [imgRoad, setImgRoad] = useState(0);
   const [arr1, setarr1] = useState([]);
   const [arr2, setarr2] = useState([]);
   const [myCorrectNum, setmyCorrectNum] = useState(0);
@@ -104,12 +105,21 @@ export default function Home() {
     }
   }
   function moveFrog() {
-    setImgRoad(parseInt(myCorrectNum / splitNum));
+    if (searchParams.get('frogType') == 1) {
+      let i = parseInt(Math.random() * 10) % 8;
+      setImageSrc(`/qiqiGame/images/nftFrog/${i}.gif`);
+    } else {
+      setImageSrc(
+        `/qiqiGame/images/normalFrog/${parseInt(myCorrectNum / splitNum)}.jpg`
+      );
+    }
 
     frog.current.style.transform = `translateX(${
       perStepMove * myCorrectNum - 50
     }px)`;
   }
+
+  function getMode() {}
 
   useEffect(() => {
     let correntNum = localStorage.getItem('correntNum') || 0;
@@ -158,10 +168,11 @@ export default function Home() {
       <div className="w-3/4 h-[130px] ">
         <div ref={frog} className=" absolute  transition-all w-[100px]">
           <Image
-            src={`/qiqiGame/images/${imgRoad}.jpg`}
+            src={imageSrc}
             alt="qiqi logo"
             width={100}
             height={100}
+            className="rounded-full  translate-y-[20%]"
             priority
           />
           <div className=" absolute left-[40px] top-[-20px] text-xl font-bold text-green-600">
