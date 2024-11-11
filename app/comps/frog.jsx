@@ -29,6 +29,7 @@ const modalStyles = {
     fontSize: '24px',
     fontWeight: 'bold',
     cursor: 'pointer',
+    color: 'black',
   },
 };
 
@@ -93,6 +94,7 @@ export default function Frog() {
     }
 
     inputRef.current.focus();
+    inputRef.current.setSelectionRange(4, 4);
     setisAnswerRight(false);
     setisDisableAgain(true);
     setmyRes('');
@@ -193,7 +195,7 @@ export default function Frog() {
         <FrogTypeChecker onFrogTypeChange={handleFrogTypeChange} />
       </Suspense>
       <div
-        className="text-xl text-black mb-10"
+        className="text-xl text-teal-200 mb-10"
         onClick={() => {
           let pass = confirm('确认重置吗？');
           if (pass) {
@@ -239,11 +241,11 @@ export default function Frog() {
           </div>
           <div className="h-28 flex items-center text-5xl">=</div>
           <div
-            className={`w-[200px] h-28 border flex justify-center items-center ${colorVariants[correctStatus]}`}
+            className={`w-[200px] h-28 border border-cyan-200 rounded-lg flex justify-center items-center ${colorVariants[correctStatus]}`}
           >
             <input
               type="text"
-              className="w-[160px] h-[50px] border-none outline-0"
+              className="w-[160px] h-[50px] border-none outline-0 bg-black text-white caret-white"
               value={myRes}
               ref={inputRef}
               onKeyDown={(e) => {
@@ -263,20 +265,20 @@ export default function Frog() {
         </div>
         <div className="flex text-xl flex-col justify-center items-end mr-[30px]">
           <div
-            className={` w-[130px] h-[50px] flex justify-center items-center my-5  text-green-50  rounded bg-black ${
+            className={` w-[130px] h-[50px] flex justify-center items-center my-5  text-green-50  rounded  ${
               isAnswerRight
-                ? 'bg-slate-500 hover:text-xl cursor-not-allowed'
-                : 'cursor-pointer'
+                ? 'bg-slate-900 hover:text-xl cursor-not-allowed'
+                : 'cursor-pointer bg-orange-500'
             }`}
             onClick={check}
           >
             对答案
           </div>
           <div
-            className={` w-[130px] h-[50px] flex justify-center items-center   text-green-50 hover:text-2xl rounded bg-black ${
+            className={` w-[130px] h-[50px] flex justify-center items-center   text-green-50 hover:text-2xl rounded  ${
               isDisableAgain
-                ? 'bg-slate-500 hover:text-xl cursor-not-allowed'
-                : 'cursor-pointer'
+                ? 'bg-slate-900 hover:text-xl cursor-not-allowed'
+                : 'cursor-pointer bg-orange-500'
             }`}
             onClick={() => {
               goAgain();
@@ -296,7 +298,7 @@ export default function Frog() {
             <span style={modalStyles.close} onClick={closeModal}>
               &times;
             </span>
-            <Image src={imageSrc} width={800} height={800} />
+            <Image src={imageSrc} width={400} height={400} />
           </div>
         </div>
       )}
