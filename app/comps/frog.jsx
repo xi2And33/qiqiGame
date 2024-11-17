@@ -46,10 +46,10 @@ export default function Frog() {
   };
   const closeModal = () => setIsOpen(false);
 
-  let ans1MaxVal = 100;
-  let ans2MaxVal = 100;
+  let ans1MaxVal = 30;
+  let ans2MaxVal = 20;
   let ans1Step = 2;
-  let ans2Step = 0.1;
+  let ans2Step = 1;
   let splitNum = 25;
   const colorVariants = {
     normal: 'border-black',
