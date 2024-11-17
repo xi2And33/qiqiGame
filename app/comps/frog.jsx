@@ -46,9 +46,9 @@ export default function Frog() {
   };
   const closeModal = () => setIsOpen(false);
 
-  let ans1MaxVal = 30;
-  let ans2MaxVal = 20;
-  let ans1Step = 2;
+  let ans1MaxVal = 50;
+  let ans2MaxVal = 50;
+  let ans1Step = 1;
   let ans2Step = 1;
   let splitNum = 25;
   const colorVariants = {
@@ -241,7 +241,7 @@ export default function Frog() {
           </div>
           <div className="h-28 flex items-center text-5xl">=</div>
           <div
-            className={`w-[200px] h-28 border border-cyan-200 rounded-lg flex justify-center items-center ${colorVariants[correctStatus]}`}
+            className={`w-[200px] h-28 border border-cyan-200 rounded-lg flex flex-col justify-center items-center ${colorVariants[correctStatus]}`}
           >
             <input
               type="text"
@@ -261,6 +261,7 @@ export default function Frog() {
                 setmyRes(e.target.value);
               }}
             />
+            <div className="text-sm ">{opt == '÷' && '(结果保留一位小数)'}</div>
           </div>
         </div>
         <div className="flex text-xl flex-col justify-center items-end mr-[30px]">
