@@ -170,7 +170,7 @@ export default function Frog() {
     return () => {};
   }, []);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (isMounted.value) {
       let objectDate = new Date();
       let day = objectDate.getDate();
