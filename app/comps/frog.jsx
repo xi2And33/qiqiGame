@@ -1,6 +1,6 @@
 'use client';
 import Image from 'next/image';
-import { useState, useEffect, useRef, Suspense } from 'react';
+import { useState, useEffect, useRef, Suspense, useLayoutEffect } from 'react';
 import FrogTypeChecker from './FrogTypeChecker';
 // Basic styles for the modal
 const modalStyles = {
@@ -34,6 +34,8 @@ const modalStyles = {
 };
 
 export default function Frog() {
+  const isMounted = useRef(false);
+  let timer1 = null;
   let opts = ['+', '-', '×', '÷'];
   let optsReals = ['+', '-', '*', '/'];
   const [isOpen, setIsOpen] = useState(false);
@@ -46,10 +48,6 @@ export default function Frog() {
   };
   const closeModal = () => setIsOpen(false);
 
-  let ans1MaxVal = 50;
-  let ans2MaxVal = 50;
-  let ans1Step = 1;
-  let ans2Step = 1;
   let splitNum = 25;
   const colorVariants = {
     normal: 'border-black',
@@ -64,6 +62,11 @@ export default function Frog() {
   const [arr2, setarr2] = useState([]);
   const [myCorrectNum, setmyCorrectNum] = useState(0);
   const [currentDate, setcurrentDate] = useState('');
+
+  const [ans1MaxVal, setans1MaxVal] = useState(50);
+  const [ans2MaxVal, setans2MaxVal] = useState(50);
+  const [ans1Step, setans1Step] = useState(1);
+  const [ans2Step, setans2Step] = useState(1);
 
   const [opt, setopt] = useState('');
   const [ans1, setans1] = useState('');
@@ -145,31 +148,41 @@ export default function Frog() {
       );
     }
   }
-  function moveFrog() {}
+
+  function getValFromLocalstorage(name, func, defultNum) {
+    let num = localStorage.getItem(name) || defultNum;
+    func(parseFloat(num));
+    localStorage.setItem(name, num);
+  }
 
   useEffect(() => {
-    let correntNum = localStorage.getItem('correntNum') || 0;
-    correntNum = parseInt(correntNum);
-    setmyCorrectNum(correntNum);
+    if (!isMounted.value) {
+      isMounted.value = true;
+    }
+    getValFromLocalstorage('correntNum', setmyCorrectNum, 0);
 
-    let arr1 = prepareVal(ans1MaxVal, ans1Step);
-    let arr2 = prepareVal(ans2MaxVal, ans2Step);
-    setarr1(arr1);
-    setarr2(arr2);
-    goAgain(arr1, arr2);
+    getValFromLocalstorage('ans1MaxVal', setans1MaxVal, 100);
+    getValFromLocalstorage('ans2MaxVal', setans2MaxVal, 50);
+    getValFromLocalstorage('ans1Step', setans1Step, 1);
+    getValFromLocalstorage('ans2Step', setans2Step, 1);
+
     setperStepMove((document.body.clientWidth * 3) / 400);
     return () => {};
   }, []);
 
-  useEffect(() => {
-    let objectDate = new Date();
-    let day = objectDate.getDate();
-    let month = objectDate.getMonth();
-    let year = objectDate.getFullYear();
+  useLayoutEffect(() => {
+    if (isMounted.value) {
+      let arr1 = prepareVal(ans1MaxVal, ans1Step);
+      let arr2 = prepareVal(ans2MaxVal, ans2Step);
 
-    setcurrentDate(`${year}-${month + 1}-${day}`);
+      setarr1(arr1);
+      setarr2(arr2);
+
+      goAgain(arr1, arr2);
+    }
+
     return () => {};
-  }, []);
+  }, [ans1Step, ans2Step]);
 
   useEffect(() => {
     // moveFrog();
