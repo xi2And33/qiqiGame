@@ -172,6 +172,12 @@ export default function Frog() {
 
   useLayoutEffect(() => {
     if (isMounted.value) {
+      let objectDate = new Date();
+      let day = objectDate.getDate();
+      let month = objectDate.getMonth();
+      let year = objectDate.getFullYear();
+
+      setcurrentDate(`${year}-${month + 1}-${day}`);
       let arr1 = prepareVal(ans1MaxVal, ans1Step);
       let arr2 = prepareVal(ans2MaxVal, ans2Step);
 
