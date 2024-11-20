@@ -1,6 +1,3 @@
-import { useEffect, useState } from 'react';
-import Image from 'next/image';
-
 export default function StarWrap({ starNum }) {
   return (
     <div className="w-[170px]  fixed left-0 top-3 border-red-100 border">
