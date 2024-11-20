@@ -2,6 +2,7 @@
 import Image from 'next/image';
 import { useState, useEffect, useRef, Suspense, useLayoutEffect } from 'react';
 import FrogTypeChecker from './FrogTypeChecker';
+import StarWrap from './star';
 // Basic styles for the modal
 const modalStyles = {
   overlay: {
@@ -54,8 +55,11 @@ export default function Frog() {
     green: 'border-green-600 text-green-600  border-4 ',
     red: 'border-red-600 text-red-600 border-4',
   };
+  const [starNum, setStarNum] = useState([]);
+
   const [imageSrc, setImageSrc] = useState('');
   const frog = useRef(null);
+  const starRef = useRef(null);
   const inputRef = useRef(null);
   const [perStepMove, setperStepMove] = useState(0);
   const [arr1, setarr1] = useState([]);
@@ -132,15 +136,22 @@ export default function Frog() {
     if (isAnswerRight) {
       return;
     }
+    if (myCorrectNum == 100) {
+      return;
+    }
     setcorrectStatus(realRes == myRes ? 'green' : 'red');
     if (realRes == myRes) {
       setisAnswerRight(true);
-      if (myCorrectNum == 100) {
-        return;
-      }
+
       setisDisableAgain(myCorrectNum + 1 == 100);
       localStorage.setItem('correntNum', myCorrectNum + 1);
       setmyCorrectNum(myCorrectNum + 1);
+
+      if (myCorrectNum + 1 == 100) {
+        let starN = localStorage.getItem('starNum') || 0;
+        localStorage.setItem('starNum', parseInt(starN) + 1);
+        setStarNum(new Array(parseInt(starN) + 1).fill(1));
+      }
 
       console.log(
         'parseInt(myCorrectNum / splitNum)',
@@ -167,6 +178,9 @@ export default function Frog() {
     getValFromLocalstorage('ans2Step', setans2Step, 1);
 
     setperStepMove((document.body.clientWidth * 3) / 400);
+
+    let starN = localStorage.getItem('starNum') || 0;
+    setStarNum(new Array(parseInt(starN)).fill(1));
     return () => {};
   }, []);
 
@@ -191,10 +205,6 @@ export default function Frog() {
   }, [ans1Step, ans2Step]);
 
   useEffect(() => {
-    // moveFrog();
-    return () => {};
-  }, [myCorrectNum]);
-  useEffect(() => {
     if (frogType === '1') {
       const i = parseInt(Math.random() * 160) % 16;
       setImageSrc(`/qiqiGame/images/nftFrog/${i}.gif`);
@@ -210,6 +220,7 @@ export default function Frog() {
 
   return (
     <div className="w-full h-screen flex flex-col items-center justify-center select-none">
+      <StarWrap starNum={starNum} />
       <Suspense fallback={<div>Loading...</div>}>
         <FrogTypeChecker onFrogTypeChange={handleFrogTypeChange} />
       </Suspense>
@@ -267,6 +278,7 @@ export default function Frog() {
               className="w-[160px] h-[50px] border-none outline-0 bg-black text-white caret-white"
               value={myRes}
               ref={inputRef}
+              disabled={myCorrectNum == 100}
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
                   if (isAnswerRight) {
@@ -286,7 +298,7 @@ export default function Frog() {
         <div className="flex text-xl flex-col justify-center items-end mr-[30px]">
           <div
             className={` w-[130px] h-[50px] flex justify-center items-center my-5  text-green-50  rounded  ${
-              isAnswerRight
+              isAnswerRight || myCorrectNum == 100
                 ? 'bg-slate-900 hover:text-xl cursor-not-allowed'
                 : 'cursor-pointer bg-orange-500'
             }`}
