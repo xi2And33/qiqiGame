@@ -100,15 +100,32 @@ export default function Frog() {
       return;
     }
 
+    setisAnswerRight(false);
+    setmyRes('');
+    resetArr(t_arr1, t_arr2);
+  }
+
+  function resetArr(t_arr1, t_arr2) {
+    setisDisableAgain(true);
     inputRef.current.focus();
     inputRef.current.setSelectionRange(4, 4);
-    setisAnswerRight(false);
-    setisDisableAgain(true);
-    setmyRes('');
+
+    if (get_val_lc('ans1Before')) {
+      setans1(get_val_lc('ans1Before'));
+      setans2(get_val_lc('ans2Before'));
+      setopt(get_val_lc('optBefore'));
+      setrealRes(get_val_lc('finalResBefore'));
+      setcorrectStatus('normal');
+      return;
+    }
+
     let indexopt = parseInt(Math.random() * opts.length);
     let opt = opts[indexopt];
     let optReal = optsReals[indexopt];
     let index1 = parseInt(Math.random() * t_arr1.length);
+
+    console.log('t_arr1[index1]', t_arr1[index1]);
+
     setans1(t_arr1[index1]);
     setopt(opt);
 
@@ -130,6 +147,11 @@ export default function Frog() {
     setcorrectStatus('normal');
 
     console.log(`${t_arr1[index1]}${opt}${t_arr2[index2]}=`, finalRes);
+
+    set_val_lc('ans1Before', t_arr1[index1]);
+    set_val_lc('ans2Before', t_arr2[index2]);
+    set_val_lc('optBefore', opt);
+    set_val_lc('finalResBefore', finalRes);
   }
 
   function check() {
@@ -141,6 +163,12 @@ export default function Frog() {
     }
     setcorrectStatus(realRes == myRes ? 'green' : 'red');
     if (realRes == myRes) {
+      remove_val_lc([
+        'ans1Before',
+        'ans2Before',
+        'optBefore',
+        'finalResBefore',
+      ]);
       setisAnswerRight(true);
 
       setisDisableAgain(myCorrectNum + 1 == 100);
@@ -164,6 +192,25 @@ export default function Frog() {
     let num = localStorage.getItem(name) || defultNum;
     func(parseFloat(num));
     localStorage.setItem(name, num);
+  }
+
+  function set_val_lc(name, num) {
+    localStorage.setItem(name, num);
+  }
+  function get_val_lc(name, num) {
+    return localStorage.getItem(name) || '';
+  }
+  function remove_val_lc(name) {
+    if (Array.isArray(name)) {
+      console.log('namename', name);
+
+      name.map((n) => {
+        console.log('nananana', n);
+        localStorage.removeItem(n);
+      });
+    } else {
+      localStorage.removeItem(name);
+    }
   }
 
   useEffect(() => {
@@ -192,13 +239,14 @@ export default function Frog() {
       let year = objectDate.getFullYear();
 
       setcurrentDate(`${year}-${month + 1}-${day}`);
+
       let arr1 = prepareVal(ans1MaxVal, ans1Step);
       let arr2 = prepareVal(ans2MaxVal, ans2Step);
 
       setarr1(arr1);
       setarr2(arr2);
 
-      goAgain(arr1, arr2);
+      resetArr(arr1, arr2);
     }
 
     return () => {};
@@ -207,7 +255,7 @@ export default function Frog() {
   useEffect(() => {
     if (frogType === '1') {
       const i = parseInt(Math.random() * 160) % 16;
-      setImageSrc(`/qiqiGame/images/nftFrog/${i}.gif`);
+      setImageSrc(`/qiqiGame/images/kid/${i}.gif`);
     } else {
       setImageSrc(
         `/qiqiGame/images/normalFrog/${parseInt(myCorrectNum / 25)}.jpg`
