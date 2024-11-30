@@ -68,7 +68,7 @@ export default function Frog() {
   const [currentDate, setcurrentDate] = useState('');
 
   const [ans1MaxVal, setans1MaxVal] = useState(50);
-  const [ans2MaxVal, setans2MaxVal] = useState(50);
+  const [ans2MaxVal, setans2MaxVal] = useState(20);
   const [ans1Step, setans1Step] = useState(1);
   const [ans2Step, setans2Step] = useState(1);
 
@@ -159,8 +159,8 @@ export default function Frog() {
     if (myCorrectNum == 100) {
       return;
     }
-    setcorrectStatus(realRes == myRes ? 'green' : 'red');
-    if (realRes == myRes) {
+    setcorrectStatus(judgeEqual(realRes, myRes) ? 'green' : 'red');
+    if (judgeEqual(realRes, myRes)) {
       remove_val_lc([
         'ans1Before',
         'ans2Before',
@@ -183,6 +183,14 @@ export default function Frog() {
         'parseInt(myCorrectNum / splitNum)',
         parseInt(myCorrectNum / splitNum)
       );
+    }
+  }
+
+  function judgeEqual(realRes, myRes) {
+    if (realRes == myRes) {
+      return true;
+    } else {
+      return eval(realRes) == eval(myRes);
     }
   }
 
@@ -214,8 +222,8 @@ export default function Frog() {
     }
     getValFromLocalstorage('correntNum', setmyCorrectNum, 0);
 
-    getValFromLocalstorage('ans1MaxVal', setans1MaxVal, 100);
-    getValFromLocalstorage('ans2MaxVal', setans2MaxVal, 50);
+    getValFromLocalstorage('ans1MaxVal', setans1MaxVal, 50);
+    getValFromLocalstorage('ans2MaxVal', setans2MaxVal, 20);
     getValFromLocalstorage('ans1Step', setans1Step, 1);
     getValFromLocalstorage('ans2Step', setans2Step, 1);
 
