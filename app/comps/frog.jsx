@@ -124,8 +124,6 @@ export default function Frog() {
     let optReal = optsReals[indexopt];
     let index1 = parseInt(Math.random() * t_arr1.length);
 
-    console.log('t_arr1[index1]', t_arr1[index1]);
-
     setans1(t_arr1[index1]);
     setopt(opt);
 
@@ -141,7 +139,7 @@ export default function Frog() {
       `${t_arr1[index1]}${optReal}${t_arr2[index2]}`
     ).toString();
     if (finalRes.includes('.')) {
-      finalRes = Number(finalRes).toFixed(1);
+      finalRes = Number(finalRes).toFixed(2);
     }
     setrealRes(finalRes);
     setcorrectStatus('normal');
@@ -202,10 +200,7 @@ export default function Frog() {
   }
   function remove_val_lc(name) {
     if (Array.isArray(name)) {
-      console.log('namename', name);
-
       name.map((n) => {
-        console.log('nananana', n);
         localStorage.removeItem(n);
       });
     } else {
@@ -340,7 +335,7 @@ export default function Frog() {
                 setmyRes(e.target.value);
               }}
             />
-            <div className="text-sm ">{opt == '÷' && '(结果保留一位小数)'}</div>
+            <div className="text-sm ">{opt == '÷' && '(结果保留两位小数)'}</div>
           </div>
         </div>
         <div className="flex text-xl flex-col justify-center items-end mr-[30px]">
