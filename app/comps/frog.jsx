@@ -257,7 +257,7 @@ export default function Frog() {
 
   useEffect(() => {
     if (frogType === '1') {
-      const i = parseInt(Math.random() * 160) % 22;
+      const i = parseInt(Math.random() * 220) % 22;
       setImageSrc(`/qiqiGame/images/kid/${i}.gif`);
     } else {
       setImageSrc(
