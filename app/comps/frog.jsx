@@ -37,8 +37,8 @@ const modalStyles = {
 export default function Frog() {
   const isMounted = useRef(false);
   let timer1 = null;
-  let opts = ['+', '-', '×', '÷'];
-  let optsReals = ['+', '-', '*', '/'];
+  let opts = ['+', '-', '×', '÷', '÷', '÷'];
+  let optsReals = ['+', '-', '*', '/', '/', '/'];
   const [isOpen, setIsOpen] = useState(false);
   const [frogType, setFrogType] = useState(null);
   const handleFrogTypeChange = (type) => {
@@ -257,7 +257,7 @@ export default function Frog() {
 
   useEffect(() => {
     if (frogType === '1') {
-      const i = parseInt(Math.random() * 160) % 16;
+      const i = parseInt(Math.random() * 160) % 22;
       setImageSrc(`/qiqiGame/images/kid/${i}.gif`);
     } else {
       setImageSrc(
